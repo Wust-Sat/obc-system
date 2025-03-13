@@ -1,0 +1,22 @@
+[project]
+name = "obc-system"
+version = "0.1.0"
+description = "WUST-Sat OBC operating system"
+authors = [
+    {name = "Juliusz Tarnowski",email = "juliusz.stanislaw.tarnowski@gmail.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.12"
+
+[tool.poetry.dependencies]
+ansible = ">=11.3.0,<12.0.0"
+
+[tool.poetry.group.dev.dependencies]
+poethepoet = "^0.33.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
