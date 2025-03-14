@@ -1,8 +1,8 @@
-# Infrastructure
+# OBC System
 
 This project contains Ansible playbooks for configuration of On-board Computer operating system.
 
-The OBC will be equipped with a Raspberry Pi Compute Module 4 and will run on Ubuntu 24.10.
+The OBC will be equipped with a Raspberry Pi Compute Module 4 and will run on Ubuntu Server 24.4.5 LTS.
 
 
 ## Setup Ansible
