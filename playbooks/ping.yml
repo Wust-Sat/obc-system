@@ -1,0 +1,27 @@
+--- 
+# Hello World playbook
+- name: Ping Test
+  hosts: raspberry_pi
+  gather_facts: no
+  tasks:
+    - name: Ping all hosts
+      ping:
+      register: ping_result
+
+    - name: Display successful connection message
+      debug:
+        msg: "Hello World! Successfully connected to {{ inventory_hostname }} ({{ ansible_host }})!"
+      when: ping_result is succeeded
+
+    - name: Verify Ansible version
+      debug:
+        msg: "Ansible version: {{ ansible_version.full }}"
+
+    - name: Check Python version on remote host
+      command: python3 --version
+      register: python_version
+      changed_when: false
+
+    - name: Display Python version
+      debug:
+        msg: "Remote Python version: {{ python_version.stdout }}"
