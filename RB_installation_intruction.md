@@ -11,8 +11,40 @@ Then click **Next**
 2. Enable SSH via password.
 3. Configure wireless LAN to your local network
  click **SAVE** and **YES** and **YES**.
-1. Now after putting SD card into raspberry you can ping your raspberry: **ping (hostname).local**.
-2. If ping doesn't work try to redo all steps or wait some more time.
+4. Now after putting SD card into raspberry you can ping your raspberry: 
+```bash
+ping (hostname).local
+```
+5. If ping doesn't work try to redo all steps or wait some more time.
    
 ## Step 4 - conneting via ssh
-**ssh ubuntu@(hostname).local**
+```bash
+ssh ubuntu@(hostname).local
+```
+## Step 5 - coping ssh key
+1. Check if you have public ssh_key: 
+```bash
+cat ~/.ssh/id_rsa.pub 
+```
+   if not generate it by running: 
+```bash
+ssh-keygen -o
+```
+2. Now you can copy you public key: 
+```bash
+ssh-copy-id ubuntu@(hostname).local
+```
+3. Now you don't log in every time you want to connect via ssh to your raspberry.
+## Step 6 - playing playbook
+1. Change raspberrypi ip adress in **inventory.ini** to match your own raspberry pi ip. You can check it via:
+```bash
+ifconfig
+``` 
+2. Activate virtual env:
+```bash
+$(poetry env activate)
+```
+3. Now run your playbook:
+```bash
+ansible-playbook playbooks/ping.yml
+```

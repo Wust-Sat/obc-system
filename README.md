@@ -27,5 +27,5 @@ raspberry ansible_host=192.168.1.100 ansible_user=ubuntu
 
 5. Run the Hello World playbook:
 ```bash
-ansible-playbook playbook/ping.yml
+ansible-playbook playbooks/ping.yml
 ```
