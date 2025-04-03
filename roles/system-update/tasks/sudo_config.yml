@@ -1,0 +1,30 @@
+---
+- name: Ensure ubuntu user is in sudo group
+  user:
+    name: ubuntu
+    groups: sudo
+    append: yes
+  when: ubuntu_user_exists.ansible_facts.getent_passwd.ubuntu is defined
+
+- name: Create sudoers.d directory if it doesn't exist
+  file:
+    path: /etc/sudoers.d
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: Configure passwordless sudo for ubuntu user
+  copy:
+    dest: /etc/sudoers.d/ubuntu-nopasswd
+    content: "ubuntu ALL=(ALL) NOPASSWD: ALL"
+    mode: '0440'
+    owner: root
+    group: root
+    validate: 'visudo -cf %s'
+
+- name: Verify sudoers syntax
+  command: visudo -c
+  register: sudoers_verify
+  changed_when: false
+  failed_when: sudoers_verify.rc != 0

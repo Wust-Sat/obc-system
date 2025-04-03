@@ -1,0 +1,12 @@
+---
+- name: Update system and setup sudo
+  hosts: raspberry_pi
+  become: yes
+  roles:
+    - system-update
+
+- name: Setup ssh keys
+  hosts: raspberry_pi
+  become: yes
+  roles:
+    - ssh-setup

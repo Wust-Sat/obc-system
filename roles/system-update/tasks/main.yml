@@ -1,0 +1,11 @@
+---
+- name: Include apt cache update tasks
+  include_tasks: update_apt.yml
+  tags:
+    - apt
+
+- name: Include sudo configuration tasks
+  include_tasks: sudo_config.yml
+  tags:
+    - sudo
+    - security

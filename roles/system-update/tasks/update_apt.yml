@@ -1,0 +1,13 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Upgrade all packages
+  apt:
+    upgrade: safe
+
+- name: Clean up unnecessary packages
+  apt:
+    autoremove: yes
