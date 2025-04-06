@@ -1,0 +1,9 @@
+- name: Enable Antenna
+  hosts: all
+  become: true
+  tasks:
+    - name: Add param
+      ansible.builtin.lineinfile:
+        path: /boot/firmware/config.txt
+        line: "dtparam=ant2"
+        state: present
