@@ -40,6 +40,10 @@ ssh-copy-id ubuntu@(hostname).local
 ```bash
 ifconfig
 ``` 
+or in terminal connected to raspberry:
+```bash
+hostname -I
+``` 
 2. Activate virtual env:
 ```bash
 $(poetry env activate)
