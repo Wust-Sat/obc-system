@@ -1,0 +1,17 @@
+---
+- name: Install and start Mosquitto
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Install Mosquitto
+      apt:
+        name: mosquitto
+        state: present
+        update_cache: yes
+
+    - name: Ensure Mosquitto is running and enabled
+      systemd:
+        name: mosquitto
+        state: started
+        enabled: yes
