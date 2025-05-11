@@ -1,0 +1,42 @@
+---
+- name: Install and start Mosquittoa and 
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Install Mosquitto
+      apt:
+        name: mosquitto
+        state: present
+        update_cache: yes
+
+    - name: Ensure Mosquitto is running and enabled
+      systemd:
+        name: mosquitto
+        state: started
+        enabled: yes
+
+    - name: Cloning tle_tracker repo
+      git:
+        repo: 'https://github.com/Wust-Sat/tle-tracker.git'
+        dest: "/home/ubuntu/tle-tracker"
+        version: main
+        update: yes
+        force: yes
+      become: no
+
+    - name: Install Python dependencies for tle-tracker with Poetry
+      become: no
+      shell: |
+        export PATH="$HOME/.local/bin:$PATH"
+        poetry install
+      args:
+        chdir: "/home/ubuntu/tle-tracker"
+
+    - name: Turining on tle_tracker
+      become: no
+      shell: |
+        export PATH="$HOME/.local/bin:$PATH"
+        nohup poetry run python -m tle_tracker.mqtt_interface &
+      args:
+        chdir: "/home/ubuntu/tle-tracker"

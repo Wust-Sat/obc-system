@@ -1,0 +1,11 @@
+---
+- name: Install poetry
+  hosts: raspberry
+  become: no
+
+  tasks:
+    - name: Install Poetry
+      shell: |
+        curl -sSL https://install.python-poetry.org | python3 -
+      args:
+        creates: "/home/ubuntu/.local/bin/poetry"
