@@ -1,5 +1,5 @@
 ---
-- name: Install and start Mosquittoa and 
+- name: Install and start Mosquitto and tle_tracker
   hosts: all
   become: yes
 
@@ -16,27 +16,42 @@
         state: started
         enabled: yes
 
-    - name: Cloning tle_tracker repo
-      git:
-        repo: 'https://github.com/Wust-Sat/tle-tracker.git'
-        dest: "/home/ubuntu/tle-tracker"
-        version: main
-        update: yes
-        force: yes
-      become: no
+    - name: Ensure pip is installed
+      apt:
+        name: python3-pip
+        state: present
+        update_cache: yes
+    
+    - name: Install TLE_tracker by pip
+      pip:
+        name: TLE_tracker
+        extra_args: --break-system-packages
+        state: latest
+        executable: pip3
 
-    - name: Install Python dependencies for tle-tracker with Poetry
-      become: no
-      shell: |
-        export PATH="$HOME/.local/bin:$PATH"
-        poetry install
-      args:
-        chdir: "/home/ubuntu/tle-tracker"
+    - name: Upload service for client
+      copy:
+        dest: /etc/systemd/system/tle_tracker.service
+        content: |
+          [Unit]
+          Description=TLE Tracker MQTT Client
+          After=network.target
 
-    - name: Turining on tle_tracker
-      become: no
-      shell: |
-        export PATH="$HOME/.local/bin:$PATH"
-        nohup poetry run python -m tle_tracker.mqtt_interface &
-      args:
-        chdir: "/home/ubuntu/tle-tracker"
+          [Service]
+          Type=simple
+          User=ubuntu
+          ExecStart=/usr/bin/python3 -m tle_tracker.mqtt_interface
+          Restart=always
+          RestartSec=5
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Przeładuj daemon systemd
+      command: systemctl daemon-reload
+
+    - name: Turn on client as a service
+      systemd:
+        name: tle_tracker.service
+        enabled: yes  
+        state: started  
