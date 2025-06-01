@@ -40,14 +40,14 @@
           [Service]
           Type=simple
           User=ubuntu
-          ExecStart=/usr/bin/python3 -m tle_tracker.mqtt_interface
+          ExecStart=/usr/bin/python3 -m tle_tracker
           Restart=always
           RestartSec=5
 
           [Install]
           WantedBy=multi-user.target
 
-    - name: Przeładuj daemon systemd
+    - name: Preload daemon systemd
       command: systemctl daemon-reload
 
     - name: Turn on client as a service
