@@ -16,3 +16,30 @@
       extra_args: "--break-system-packages --ignore-installed"
       state: latest
       executable: pip3
+  
+  - name: Upload service for client
+    copy:
+      dest: /etc/systemd/system/can_logger.service
+      content: |
+        [Unit]
+        Description=Can_logger
+        After=network.target
+
+        [Service]
+        Type=simple
+        User=ubuntu
+        ExecStart=/usr/bin/python3 -m can_logger --interface vcan0
+        Restart=always
+        RestartSec=5
+
+        [Install]
+        WantedBy=multi-user.target
+
+  - name: Preload daemon systemd
+    command: systemctl daemon-reload
+
+  - name: Turn on client as a service
+    systemd:
+      name: can_logger.service
+      enabled: yes  
+      state: started  
